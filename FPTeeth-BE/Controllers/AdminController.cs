@@ -1,6 +1,7 @@
 ﻿using FPTeeth_BE.Dtos;
 using FPTeeth_BE.Enity;
 using FPTeeth_BE.Service.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,20 +21,21 @@ namespace FPTeeth_BE.Controllers
             _clinicService = clinicService;
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpPost("addClinicOwner")]
         public async Task<IActionResult> AddClinicOwner([FromBody] AddClinicOnwerDto addClinicOnwerDto) {
             await _accountService.AddClinicOwner(addClinicOnwerDto);
             return Ok();
         }
 
-
+        [Authorize(Roles = "ADMIN")]
         [HttpGet("getListUserActiveAndDeactive")]
         public async Task<List<Account>> GetListUserActiveAndDeactive()
         {
             
             return await _accountService.GetListUserActiveAndDeactive();
         }
-
+        [Authorize(Roles = "ADMIN")]
         [HttpGet("getListUserPending")]
         public async Task<List<Account>> GetListUserPending()
         {
@@ -41,6 +43,7 @@ namespace FPTeeth_BE.Controllers
             return await _accountService.GetListUserPending();
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpGet("getListClinicActiveAndDeactive")]
         public async Task<List<Clinics>> GetListClinicActiveAndDeactive()
         {
@@ -48,10 +51,10 @@ namespace FPTeeth_BE.Controllers
             return await _clinicService.GetClinicsActiveAndDeactive();
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpGet("getClinicsPending")]
         public async Task<List<Clinics>> GetClinicsPending()
         {
-
             return await _clinicService.GetClinicsPending();
         }
     }
