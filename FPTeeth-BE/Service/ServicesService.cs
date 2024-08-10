@@ -16,7 +16,7 @@ namespace FPTeeth_BE.Service
 
         public async Task<List<Services>> GetAllServices()
         {
-            return await _servicesRepository.Get().ToListAsync();
+            return await _servicesRepository.Get().Where(x => x.Status == 2).ToListAsync();
         }
     }
 }

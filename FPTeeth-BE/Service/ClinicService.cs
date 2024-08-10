@@ -32,15 +32,9 @@ namespace FPTeeth_BE.Service
             List<Clinics> result = await _clinicRepository.Get().Where(x => x.Status == 2).ToListAsync();
             foreach (Clinics clinic in result)
             {
-                clinic.Owner = await _accountService.GetAccountById(clinic.Owner.Id);
                 clinic.Doctors = await _doctorService.GetAllDoctorByClinicId(clinic.Id);
             }
             return result;
-        }
-
-        public async Task<List<Doctor>> GetAllDoctorOfClinic(int id)
-        {
-            return GetClinicById(id).Result.Doctors;
         }
 
         public async Task<Clinics> GetClinicById(int id)

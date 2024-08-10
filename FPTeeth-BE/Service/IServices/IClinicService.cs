@@ -9,6 +9,5 @@ namespace FPTeeth_BE.Service.IServices
         Task<List<Clinics>> GetClinicsPending();
         Task<List<Clinics>> GetAllClinicAvailable();
         Task<Clinics> GetClinicById(int id);
-        Task<List<Doctor>> GetAllDoctorOfClinic(int id);
     }
 }
