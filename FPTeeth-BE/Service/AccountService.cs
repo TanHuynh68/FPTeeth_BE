@@ -45,6 +45,22 @@ namespace FPTeeth_BE.Service
         {
             return await _accountRepository.Get().Include(x => x.Role).Where(x => x.Status == 2 || x.Status == 3).ToListAsync();
         }
+        public async Task<List<DoctorDto>> GetAllDoctor()
+        {
+            List<Account> list = await _accountRepository.Get().Where(x => x.Role.Id == 3).Where(x => x.Status == 2).ToListAsync();
+            List<DoctorDto> result = new List<DoctorDto>();
+            foreach (var account in list)
+            {
+                DoctorDto doctor = new DoctorDto
+                {
+                    Name = "Doctor's name",
+                    Description = "Very good",
+                    Image = account.Image
+                };
+                result.Add(doctor);
+            };
+            return result;
+        }
 
         public async Task<List<Account>> GetListUserPending()
         {
