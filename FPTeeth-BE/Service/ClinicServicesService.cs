@@ -9,6 +9,11 @@ namespace FPTeeth_BE.Service
     {
         private readonly IRepository<Enity.ClinicService> _clinicServiceRepository;
 
+        public ClinicServicesService(IRepository<Enity.ClinicService> clinicServiceRepository)
+        {
+            _clinicServiceRepository = clinicServiceRepository;
+        }
+
         public async Task<List<FPTeeth_BE.Enity.ClinicService>> GetAllServiceOfClinic(int id)
         {
             return await _clinicServiceRepository.Get().Where(x => x.Clinics.Id == id).ToListAsync();

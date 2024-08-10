@@ -32,6 +32,7 @@ namespace FPTeeth_BE.Service
             List<Clinics> result = await _clinicRepository.Get().Where(x => x.Status == 2).ToListAsync();
             foreach (Clinics clinic in result)
             {
+                clinic.Owner = await _accountService.GetAccountById(clinic.Id);
                 clinic.Doctors = await _doctorService.GetAllDoctorByClinicId(clinic.Id);
             }
             return result;

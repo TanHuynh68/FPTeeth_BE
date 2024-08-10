@@ -9,6 +9,11 @@ namespace FPTeeth_BE.Service
     {
         private readonly IRepository<Services> _servicesRepository;
 
+        public ServicesService(IRepository<Services> servicesRepository)
+        {
+            _servicesRepository = servicesRepository;
+        }
+
         public Task ChangeServiceStatus(int id)
         {
             throw new NotImplementedException();

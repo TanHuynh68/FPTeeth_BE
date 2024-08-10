@@ -10,6 +10,6 @@
 
         public Account? Account { get; set; }
 
-        public int? ClinicId { get; set; }
+        public int? ClinicsId { get; set; }
     }
 }
