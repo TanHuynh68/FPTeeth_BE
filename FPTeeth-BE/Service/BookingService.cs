@@ -64,8 +64,8 @@ namespace FPTeeth_BE.Service
         public async Task<Booking> AddBooking(BookingDto bookingDto)
         {
             var clinic = await _clinicRepository.Get().Where(x => x.Id == bookingDto.ClinicId).SingleOrDefaultAsync();
-            var customer = await _customerRepository.Get().Where(x => x.Id == bookingDto.CustomerId).SingleOrDefaultAsync();
-            var doctor = await _doctorRepository.Get().Where(x => x.Id == bookingDto.DoctorID).SingleOrDefaultAsync();
+            var customer = await _customerRepository.Get().Where(x => x.Account.Id == bookingDto.CustomerId).SingleOrDefaultAsync();
+            var doctor = await _doctorRepository.Get().Where(x => x.Account.Id == bookingDto.DoctorID).SingleOrDefaultAsync();
             var clinicService = await _clinicServiceRepository.Get().Where(x => x.Clinics.Id == bookingDto.ClinicId && x.Services.Id == bookingDto.ServiceId).FirstOrDefaultAsync();
             var slot = await _slotRepository.Get().Where(x => x.SlotTime == bookingDto.Slot).SingleOrDefaultAsync();
             var newBooking = new Booking

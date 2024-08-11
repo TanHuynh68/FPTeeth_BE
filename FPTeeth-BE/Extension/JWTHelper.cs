@@ -29,7 +29,8 @@ namespace FPTeeth_BE.Extension
                 new Claim(JwtRegisteredClaimNames.Sub, account.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.UniqueName, account?.Email),
                 new Claim(ClaimTypes.Role, account.Role.Name),
-                new Claim(ClaimTypes.Email, account.Email)
+                new Claim(ClaimTypes.Email, account.Email),
+                new Claim("Id", account.Id.ToString()),
             }),
                 Expires = DateTime.UtcNow.AddMinutes(expireMinutes),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),

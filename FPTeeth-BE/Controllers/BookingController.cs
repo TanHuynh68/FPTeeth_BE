@@ -28,7 +28,7 @@ namespace FPTeeth_BE.Controllers
             return Ok( await _bookingService.UpdateResult(id, result));
         }
 
-        [Authorize("CUSTOMER")]
+        [Authorize(Roles = "CUSTOMER")]
         [HttpPost("AddBooking")]
         public async Task<Booking> AddBooking([FromBody] BookingDto bookingDto)
         {
