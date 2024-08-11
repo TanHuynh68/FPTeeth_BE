@@ -23,8 +23,8 @@ namespace FPTeeth_BE.Controllers
 
         [Authorize(Roles = "ADMIN")]
         [HttpPost("addClinicOwner")]
-        public async Task<IActionResult> AddClinicOwner([FromBody] AddClinicOnwerDto addClinicOnwerDto) {
-            await _accountService.AddClinicOwner(addClinicOnwerDto);
+        public async Task<IActionResult> AddClinicOwner([FromBody] AddClinicOwnerDto addClinicOwnerDto) {
+            await _accountService.AddClinicOwner(addClinicOwnerDto);
             return Ok();
         }
 

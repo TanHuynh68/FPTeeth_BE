@@ -24,19 +24,25 @@ namespace FPTeeth_BE.Service
             _customerRepository = customerRepository;
         }
 
-        public async Task AddClinicOwner(AddClinicOnwerDto addClinicOnwerDto)
+        public async Task AddClinicOwner(AddClinicOwnerDto addClinicOwnerDto)
         {
-            var newOnwer = new Account
+            var email = await _accountRepository.Get().Where(x => x.Email == addClinicOwnerDto.Email).SingleOrDefaultAsync();
+
+            if (email != null) throw new Exception("Duplicate email!");
+
+            var newOwner = new Account
             {
                 CreatedAt = DateTime.Now,
                 UpdateAt = DateTime.Now,
-                Email = addClinicOnwerDto.UserName,
-                Password = addClinicOnwerDto.Password,
-                Status = (int)UserStatusEnum.Active,
+                FullName = addClinicOwnerDto.FullName,
+                Gender = addClinicOwnerDto.Gender,
+                Email = addClinicOwnerDto.Email,
+                Password = addClinicOwnerDto.Password,
+                Status = (int) UserStatusEnum.Active,
                 Role = await _roleRepository.Get().Where(x => x.Name == "CLINICOWNER").FirstAsync()
             };
 
-            await _accountRepository.AddAsync(newOnwer);
+            await _accountRepository.AddAsync(newOwner);
             await _accountRepository.SaveChangesAsync();
         }
 
@@ -65,7 +71,7 @@ namespace FPTeeth_BE.Service
         {
             var email = await _accountRepository.Get().Where(x => x.Email == registerDto.Email).SingleOrDefaultAsync();
 
-            if (email != null) throw new Exception("Duplicate Email");
+            if (email != null) throw new Exception("Duplicate email!");
 
             var newCus
                 = new Account
@@ -86,7 +92,7 @@ namespace FPTeeth_BE.Service
 
         public async Task<Account> UpdateStatusBetweenActiveAnDeactive(int id)
         {
-            var user = await _accountRepository.Get().Where(x => x.Id == id && x.Role.Name != "ADMIN" && x.Status != (int)UserStatusEnum.Pending).SingleOrDefaultAsync() ?? throw new Exception("User not found");
+            var user = await _accountRepository.Get().Where(x => x.Id == id && x.Role.Name != "ADMIN" && x.Status != (int)UserStatusEnum.Pending).SingleOrDefaultAsync() ?? throw new Exception("User not found!");
             if (user.Status == (int)UserStatusEnum.Active)
             {
                 user.Status = (int)UserStatusEnum.Deactive;
@@ -107,7 +113,7 @@ namespace FPTeeth_BE.Service
                         .Where(x => x.Id == id &&
                                x.Role.Name != "ADMIN" &&
                                x.Status == (int)UserStatusEnum.Pending)
-                .SingleOrDefaultAsync() ?? throw new Exception("User not found");
+                .SingleOrDefaultAsync() ?? throw new Exception("User not found!");
 
             user.Status = (int)UserStatusEnum.Active;
 
@@ -117,7 +123,7 @@ namespace FPTeeth_BE.Service
 
         public async Task DeleteUserPendingById(int id)
         {
-            var user = await _accountRepository.Get().Where(x => x.Id == id && x.Status == (int)UserStatusEnum.Pending).SingleOrDefaultAsync() ?? throw new Exception("User not found");
+            var user = await _accountRepository.Get().Where(x => x.Id == id && x.Status == (int)UserStatusEnum.Pending).SingleOrDefaultAsync() ?? throw new Exception("User not found!");
             _accountRepository.Delete(user);
             await _accountRepository.SaveChangesAsync();
         }

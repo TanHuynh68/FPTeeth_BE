@@ -5,7 +5,7 @@ namespace FPTeeth_BE.Service.IServices
 {
     public interface IAccountService
     {
-        Task AddClinicOwner(AddClinicOnwerDto addClinicOnwerDto);
+        Task AddClinicOwner(AddClinicOwnerDto addClinicOwnerDto);
         Task<List<Account>> GetListUserActiveAndDeactive();
         Task<List<Account>> GetListUserPending();
         Task<Account> GetAccountById(int id);
