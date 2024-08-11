@@ -107,10 +107,10 @@ namespace FPTeeth_BE.Controllers
         }
 
         [Authorize(Roles = "ADMIN")]
-        [HttpPut("updateCliníctatusPendingToActive/{id}")]
-        public async Task<IActionResult> UpdateCliníctatusPendingToActive(int id)
+        [HttpPut("UpdateClinicStatusPendingToActive/{id}")]
+        public async Task<IActionResult> UpdateClinicStatusPendingToActive(int id)
         {
-            await _clinicService.UpdateCliníctatusPendingToActive(id);
+            await _clinicService.UpdateClinicStatusPendingToActive(id);
             return Ok();
         }
 

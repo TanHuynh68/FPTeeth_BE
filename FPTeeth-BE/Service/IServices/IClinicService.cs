@@ -14,6 +14,6 @@ namespace FPTeeth_BE.Service.IServices
 
         Task<Clinics> UpdateClinicStatusBetweenActiveAndDeactive(int id);
 
-        Task<Clinics> UpdateCliníctatusPendingToActive(int id);
+        Task<Clinics> UpdateClinicStatusPendingToActive(int id);
     }
 }

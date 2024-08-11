@@ -17,8 +17,8 @@ namespace FPTeeth_BE.Service
 
         public async Task DeletePendingClinicById(int id)
         {
-            var clinic = await _clinicRepository.Get().Where(x => x.Id == id).SingleOrDefaultAsync() ?? throw new Exception("Clinic not found");
-            if (clinic.Status == (int)UserStatusEnum.Pending) { throw new Exception("Clinic is not Pending status"); }
+            var clinic = await _clinicRepository.Get().Where(x => x.Id == id).SingleOrDefaultAsync() ?? throw new Exception("Clinic not found!");
+            if (clinic.Status != (int) UserStatusEnum.Pending) { throw new Exception("Clinic is not pending status!"); }
             _clinicRepository.Delete(clinic);
             await _clinicRepository.SaveChangesAsync();
         }
@@ -30,7 +30,7 @@ namespace FPTeeth_BE.Service
 
         public async Task<Clinics?> GetClinicsByName(string name)
         {
-            return await _clinicRepository.Get().Where(x => x.Name == name).FirstOrDefaultAsync();
+            return await _clinicRepository.Get().Where(x => x.Name.Contains(name)).FirstOrDefaultAsync();
         }
 
         public async Task<List<Clinics>> GetClinicsPending()
@@ -40,7 +40,7 @@ namespace FPTeeth_BE.Service
 
         public async Task<Clinics> UpdateClinicStatusBetweenActiveAndDeactive(int id)
         {
-            var clinic = await _clinicRepository.Get().Where(x => x.Id == id && x.Status != (int)UserStatusEnum.Pending).FirstOrDefaultAsync() ?? throw new Exception("Clinic not found");
+            var clinic = await _clinicRepository.Get().Where(x => x.Id == id && x.Status != (int)UserStatusEnum.Pending).FirstOrDefaultAsync() ?? throw new Exception("Clinic not found!");
             if(clinic.Status == (int)UserStatusEnum.Active)
             {
                 clinic.Status = (int)UserStatusEnum.Deactive;
@@ -52,9 +52,9 @@ namespace FPTeeth_BE.Service
             return clinic;
         }
 
-        public async Task<Clinics> UpdateCliníctatusPendingToActive(int id)
+        public async Task<Clinics> UpdateClinicStatusPendingToActive(int id)
         {
-            var clinic = await _clinicRepository.Get().Where(x => x.Id == id && x.Status == (int)UserStatusEnum.Pending).FirstOrDefaultAsync() ?? throw new Exception("Clinic not found");
+            var clinic = await _clinicRepository.Get().Where(x => x.Id == id && x.Status == (int)UserStatusEnum.Pending).FirstOrDefaultAsync() ?? throw new Exception("Clinic not found!");
             clinic.Status = (int)UserStatusEnum.Active;
             await _clinicRepository.SaveChangesAsync();
             return clinic;
