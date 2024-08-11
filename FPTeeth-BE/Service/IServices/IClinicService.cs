@@ -11,5 +11,13 @@ namespace FPTeeth_BE.Service.IServices
         Task<List<Clinics>> GetAllClinicAvailable();
         Task<Clinics> GetClinicById(int id);
         Task AddNewClinic(AddClinicDto clinic);
+
+        Task<Clinics?> GetClinicsByName(string name);
+
+        Task DeletePendingClinicById(int id);
+
+        Task<Clinics> UpdateClinicStatusBetweenActiveAndDeactive(int id);
+
+        Task<Clinics> UpdateClinicStatusPendingToActive(int id);
     }
 }

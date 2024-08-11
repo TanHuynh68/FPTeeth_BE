@@ -21,9 +21,22 @@ namespace FPTeeth_BE.Service
             _accountService = accountService;
         }
 
+        public async Task DeletePendingClinicById(int id)
+        {
+            var clinic = await _clinicRepository.Get().Where(x => x.Id == id).SingleOrDefaultAsync() ?? throw new Exception("Clinic not found!");
+            if (clinic.Status != (int) UserStatusEnum.Pending) { throw new Exception("Clinic is not pending status!"); }
+            _clinicRepository.Delete(clinic);
+            await _clinicRepository.SaveChangesAsync();
+        }
+
         public async Task<List<Clinics>> GetClinicsActiveAndDeactive()
         {
             return await _clinicRepository.Get().Where(x => x.Status == 2 || x.Status == 3).ToListAsync();
+        }
+
+        public async Task<Clinics?> GetClinicsByName(string name)
+        {
+            return await _clinicRepository.Get().Where(x => x.Name.Contains(name)).FirstOrDefaultAsync();
         }
 
         public async Task<List<Clinics>> GetClinicsPending()
@@ -64,6 +77,28 @@ namespace FPTeeth_BE.Service
             };
             await _clinicRepository.AddAsync(newClinic);
             await _clinicRepository.SaveChangesAsync();
+        }
+
+        public async Task<Clinics> UpdateClinicStatusBetweenActiveAndDeactive(int id)
+        {
+            var clinic = await _clinicRepository.Get().Where(x => x.Id == id && x.Status != (int)UserStatusEnum.Pending).FirstOrDefaultAsync() ?? throw new Exception("Clinic not found!");
+            if(clinic.Status == (int)UserStatusEnum.Active)
+            {
+                clinic.Status = (int)UserStatusEnum.Deactive;
+            }else
+            {
+                clinic.Status = (int)UserStatusEnum.Active;
+            }
+            await _clinicRepository.SaveChangesAsync();
+            return clinic;
+        }
+
+        public async Task<Clinics> UpdateClinicStatusPendingToActive(int id)
+        {
+            var clinic = await _clinicRepository.Get().Where(x => x.Id == id && x.Status == (int)UserStatusEnum.Pending).FirstOrDefaultAsync() ?? throw new Exception("Clinic not found!");
+            clinic.Status = (int)UserStatusEnum.Active;
+            await _clinicRepository.SaveChangesAsync();
+            return clinic;
         }
     }
 }

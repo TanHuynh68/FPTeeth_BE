@@ -2,9 +2,10 @@
 {
     public class WorkingTime : IEntity
     {
-       public int Id { get; set; }
-       public int Status { get; set; }
-       public Doctor? Doctor { get; set; }
-       public Slot? Slot { get; set; }
+        public int Id { get; set; }
+        public int Status { get; set; }
+        public Doctor? Doctor { get; set; }
+        public int WorkingDayOfWeek { get; set; }
+        public Slot? Slot { get; set; }
     }
 }
