@@ -1,6 +1,9 @@
-﻿using FPTeeth_BE.Enity;
+﻿using FPTeeth_BE.Dtos;
+using FPTeeth_BE.Enity;
+using FPTeeth_BE.Enum;
 using FPTeeth_BE.Repositories;
 using FPTeeth_BE.Service.IServices;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace FPTeeth_BE.Service
@@ -43,6 +46,24 @@ namespace FPTeeth_BE.Service
             Clinics clinic = await _clinicRepository.GetAsync(id);
             clinic.Doctors = await _doctorService.GetAllDoctorByClinicId(id);
             return clinic;
+        }
+
+        public async Task AddNewClinic(AddClinicDto clinic)
+        {
+            var newClinic = new Clinics
+            {
+                Address = clinic.Address,
+                CreateAt = DateTime.Now,
+                UpdateAt = DateTime.Now,
+                Description = clinic.Description,
+                Image = clinic.Image,
+                Name = clinic.Name,
+                Status = (int)ClinicStatusEnum.Pending,
+                Owner = await _accountService.GetAccountById(clinic.OwnerId),
+                Doctors = null,
+            };
+            await _clinicRepository.AddAsync(newClinic);
+            await _clinicRepository.SaveChangesAsync();
         }
     }
 }

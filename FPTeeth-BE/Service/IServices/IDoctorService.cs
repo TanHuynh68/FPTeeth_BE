@@ -5,7 +5,8 @@ namespace FPTeeth_BE.Service.IServices
 {
     public interface IDoctorService
     {
-        Task<List<DoctorDto>> GetAllDoctorDtoByClinicId(int id);
         Task<List<Doctor>> GetAllDoctorByClinicId(int id);
+        Task AddDoctorToClinic(int DoctorId, int ClinicId);
+        Task AddDoctor(Doctor doctor);
     }
 }

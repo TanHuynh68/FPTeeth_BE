@@ -3,6 +3,7 @@ using FPTeeth_BE.Enity;
 using FPTeeth_BE.Extension;
 using FPTeeth_BE.Service.IServices;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -10,6 +11,7 @@ namespace FPTeeth_BE.Controllers
 {
     [ApiController]
     [Route("Guest")]
+    [EnableCors]
     public class GuestController : Controller
     {
         private readonly IDoctorService _doctorService;
