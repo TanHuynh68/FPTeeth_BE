@@ -1,4 +1,4 @@
-﻿namespace FPTeeth_BE.Controllers
+﻿namespace FPTeeth_BE.Dtos
 {
     public class RegisterDto
     {

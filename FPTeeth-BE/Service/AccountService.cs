@@ -1,5 +1,4 @@
-﻿using FPTeeth_BE.Controllers;
-using FPTeeth_BE.Dtos;
+﻿using FPTeeth_BE.Dtos;
 using FPTeeth_BE.Enity;
 using FPTeeth_BE.Enum;
 using FPTeeth_BE.Extension;
@@ -62,15 +61,14 @@ namespace FPTeeth_BE.Service
 
         }
 
-        public async Task<Customer> Register(RegisterDto registerDto)
+        public async Task<Account> Register(RegisterDto registerDto)
         {
             var email = await _accountRepository.Get().Where(x => x.Email == registerDto.Email).SingleOrDefaultAsync();
 
             if (email != null) throw new Exception("Duplicate Email");
 
-            var newCus = new Customer
-            {
-                Account = new Account
+            var newCus
+                = new Account
                 {
                     CreatedAt = DateTime.Now,
                     UpdateAt = DateTime.Now,
@@ -78,14 +76,65 @@ namespace FPTeeth_BE.Service
                     Password = registerDto.Password,
                     Status = (int)UserStatusEnum.Active,
                     Role = await _roleRepository.Get().Where(x => x.Name == "CUSTOMER").FirstAsync()
-                },
-                CustomerName = registerDto.FullName
-            };
+                };
 
-            await _customerRepository.AddAsync(newCus);
-            await _customerRepository.SaveChangesAsync();
+            await _accountRepository.AddAsync(newCus);
+            await _accountRepository.SaveChangesAsync();
 
             return newCus;
+        }
+
+        public async Task<Account> UpdateStatusBetweenActiveAnDeactive(int id)
+        {
+            var user = await _accountRepository.Get().Where(x => x.Id == id && x.Role.Name != "ADMIN" && x.Status != (int)UserStatusEnum.Pending).SingleOrDefaultAsync() ?? throw new Exception("User not found");
+            if (user.Status == (int)UserStatusEnum.Active)
+            {
+                user.Status = (int)UserStatusEnum.Deactive;
+            }
+            else
+            {
+                user.Status = (int)UserStatusEnum.Active;
+            }
+
+            await _accountRepository.SaveChangesAsync();
+
+            return user;
+        }
+
+        public async Task<Account> UpdateStatusPendingToActive(int id)
+        {
+            var user = await _accountRepository.Get()
+                        .Where(x => x.Id == id &&
+                               x.Role.Name != "ADMIN" &&
+                               x.Status == (int)UserStatusEnum.Pending)
+                .SingleOrDefaultAsync() ?? throw new Exception("User not found");
+
+            user.Status = (int)UserStatusEnum.Active;
+
+            await _accountRepository.SaveChangesAsync();
+            return user;
+        }
+
+        public async Task DeleteUserPendingById(int id)
+        {
+            var user = await _accountRepository.Get().Where(x => x.Id == id && x.Status == (int)UserStatusEnum.Pending).SingleOrDefaultAsync() ?? throw new Exception("User not found");
+            _accountRepository.Delete(user);
+            await _accountRepository.SaveChangesAsync();
+        }
+
+        public async Task<List<Account>> GetAccountByFilter(FilterUserDTO filterUserDTO)
+        {
+            var query = _accountRepository.Get();
+            if (!string.IsNullOrEmpty(filterUserDTO.Name))
+            {
+                query = query.Where(x => x.FullName.Contains(filterUserDTO.Name));
+            }
+            if (!string.IsNullOrEmpty(filterUserDTO.RoleName))
+            {
+                query = query.Where(x => x.Role.Name == filterUserDTO.RoleName);
+            }
+
+            return await query.ToListAsync();
         }
     }
 }

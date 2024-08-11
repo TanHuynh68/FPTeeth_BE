@@ -7,5 +7,13 @@ namespace FPTeeth_BE.Service.IServices
         Task<List<Clinics>> GetClinicsActiveAndDeactive();
 
         Task<List<Clinics>> GetClinicsPending();
+
+        Task<Clinics?> GetClinicsByName(string name);
+
+        Task DeletePendingClinicById(int id);
+
+        Task<Clinics> UpdateClinicStatusBetweenActiveAndDeactive(int id);
+
+        Task<Clinics> UpdateCliníctatusPendingToActive(int id);
     }
 }

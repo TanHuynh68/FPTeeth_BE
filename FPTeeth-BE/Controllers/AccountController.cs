@@ -38,7 +38,7 @@ namespace FPTeeth_BE.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<Customer> Register([FromBody] RegisterDto registerDto)
+        public async Task<Account> Register([FromBody] RegisterDto registerDto)
         {
             var customer = await _accountService.Register(registerDto);
             return customer;
