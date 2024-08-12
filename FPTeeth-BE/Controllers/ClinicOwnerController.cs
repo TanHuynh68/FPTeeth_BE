@@ -17,8 +17,9 @@ namespace FPTeeth_BE.Controllers
         private readonly IAccountService _accountService;
         private readonly ICustomerService _customerService;
         private readonly IBookingService _bookingService;
+        private readonly IWorkingTimeService _workingTimeService;
 
-        public ClinicOwnerController(IDoctorService doctorService, IClinicService clinicService, IClinicServicesService clinicServicesService, IServicesService servicesService, IAccountService accountService, ICustomerService customerService, IBookingService bookingService)
+        public ClinicOwnerController(IDoctorService doctorService, IClinicService clinicService, IClinicServicesService clinicServicesService, IServicesService servicesService, IAccountService accountService, ICustomerService customerService, IBookingService bookingService, IWorkingTimeService workingTimeService)
         {
             _doctorService = doctorService;
             _clinicService = clinicService;
@@ -27,6 +28,7 @@ namespace FPTeeth_BE.Controllers
             _accountService = accountService;
             _customerService = customerService;
             _bookingService = bookingService;
+            _workingTimeService = workingTimeService;
         }
 
         [AllowAnonymous]
@@ -91,6 +93,30 @@ namespace FPTeeth_BE.Controllers
         {
 
             return await _bookingService.GetAllByClinicId(clinicId);
+        }
+        
+        [AllowAnonymous]
+        [HttpGet("GetAllWorkingTimeOfDoctor")]
+        public async Task<List<WorkingTime>> GetAllWorkingTimeOfDoctor(int doctorId)
+        {
+
+            return await _workingTimeService.GetWorkingTimeByDoctorId(doctorId);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("UpdateClinicInformation")]
+        public async Task<IActionResult> UpdateClinicInformation([FromBody]Clinics clinic)
+        {
+            await _clinicService.UpdateClinicInfo(clinic);
+            return Ok();
+        }
+
+        [AllowAnonymous]
+        [HttpPost("AddServiceIntoClinic")]
+        public async Task<IActionResult> AddServiceIntoClinic(int clinicId,int serviceId)
+        {
+            await _clinicServicesService.addServicesToClinic(clinicId,serviceId);
+            return Ok();
         }
     }
 }

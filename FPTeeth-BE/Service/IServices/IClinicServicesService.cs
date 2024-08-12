@@ -4,6 +4,7 @@ namespace FPTeeth_BE.Service.IServices
 {
     public interface IClinicServicesService
     {
-        Task<List<FPTeeth_BE.Enity.ClinicService>> GetAllServiceOfClinic(int id);
+        Task<List<Enity.ClinicService>> getAllServiceOfClinic(int id);
+        Task addServicesToClinic(int clinicId, int serviceId);
     }
 }

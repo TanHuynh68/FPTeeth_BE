@@ -48,7 +48,7 @@ namespace FPTeeth_BE.Service
             List<Clinics> result = await _clinicRepository.Get().Where(x => x.Status == 2).ToListAsync();
             foreach (Clinics clinic in result)
             {
-                clinic.Owner = await _accountService.GetAccountById(clinic.Id);
+                clinic.Owner = await _accountService.GetAccountById(clinic.Owner.Id);
                 clinic.Doctors = await _doctorService.GetAllDoctorByClinicId(clinic.Id);
             }
             return result;
@@ -103,8 +103,22 @@ namespace FPTeeth_BE.Service
 
         public async Task<List<Clinics>> GetClinicsByOwnerId(int id)
         {
+            var result = await _clinicRepository.Get().Where(x => x.Owner.Id == id).ToListAsync();
+            foreach (var clinic in result)
+            {
+                clinic.Owner = await _accountService.GetAccountById(id);
+                clinic.Doctors = await _doctorService.GetAllDoctorByClinicId(clinic.Id);
+            }
+            return result;
+        }
 
-            return await _clinicRepository.Get().Where(x => x.Owner.Id == id).ToListAsync();
+        public async Task UpdateClinicInfo(Clinics clinic)
+        {
+            var newClinic = await GetClinicById(clinic.Id);
+            if (clinic == null) throw new Exception("Can't find this clinic");
+            newClinic = clinic;
+            newClinic.UpdateAt = DateTime.Now;
+            _clinicRepository.SaveChangesAsync();
         }
     }
 }

@@ -45,7 +45,7 @@ namespace FPTeeth_BE.Service
             var newDoc = new Doctor
                 {
                     Account = newAcc,
-            };
+                };
             await _doctorRepository.AddAsync(newDoc);
             await _roleRepository.SaveChangesAsync();
         }
