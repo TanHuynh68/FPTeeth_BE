@@ -7,7 +7,7 @@ namespace FPTeeth_BE.Service.IServices
     {
         Task AddClinicOwner(AddClinicOwnerDto addClinicOwnerDto);
         Task<List<Account>> GetListUserActiveAndDeactive();
-        Task<List<DoctorDto>> GetAllDoctor();
+        Task<List<Account>> GetAllDoctor();
         Task<List<Account>> GetListUserPending();
         Task<Account> GetAccountById(int id);
         Task<Account?> Login(LoginDto loginDto);

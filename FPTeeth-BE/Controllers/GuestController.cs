@@ -31,7 +31,7 @@ namespace FPTeeth_BE.Controllers
 
         [AllowAnonymous]
         [HttpGet("GetAllDoctors")]
-        public async Task<List<DoctorDto>> GetAllDoctors()
+        public async Task<List<Account>> GetAllDoctors()
         {
             return await _accountService.GetAllDoctor();
         }

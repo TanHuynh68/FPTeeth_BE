@@ -82,12 +82,12 @@ namespace FPTeeth_BE.Service
         public async Task<Clinics> UpdateClinicStatusBetweenActiveAndDeactive(int id)
         {
             var clinic = await _clinicRepository.Get().Where(x => x.Id == id && x.Status != (int)UserStatusEnum.Pending).FirstOrDefaultAsync() ?? throw new Exception("Clinic not found!");
-            if(clinic.Status == (int)UserStatusEnum.Active)
+            if(clinic.Status == (int)ClinicStatusEnum.Available)
             {
-                clinic.Status = (int)UserStatusEnum.Deactive;
+                clinic.Status = (int)ClinicStatusEnum.Unavailable;
             }else
             {
-                clinic.Status = (int)UserStatusEnum.Active;
+                clinic.Status = (int)ClinicStatusEnum.Available;
             }
             await _clinicRepository.SaveChangesAsync();
             return clinic;
@@ -96,9 +96,15 @@ namespace FPTeeth_BE.Service
         public async Task<Clinics> UpdateClinicStatusPendingToActive(int id)
         {
             var clinic = await _clinicRepository.Get().Where(x => x.Id == id && x.Status == (int)UserStatusEnum.Pending).FirstOrDefaultAsync() ?? throw new Exception("Clinic not found!");
-            clinic.Status = (int)UserStatusEnum.Active;
+            clinic.Status = (int)ClinicStatusEnum.Available;
             await _clinicRepository.SaveChangesAsync();
             return clinic;
+        }
+
+        public async Task<List<Clinics>> GetClinicsByOwnerId(int id)
+        {
+
+            return await _clinicRepository.Get().Where(x => x.Owner.Id == id).ToListAsync();
         }
     }
 }

@@ -87,5 +87,15 @@ namespace FPTeeth_BE.Service
             await _bookingRepository.SaveChangesAsync();
             return newBooking;
         }
+
+        public async Task<List<Booking>> GetAllByClinicId(int clinicId)
+        {
+            var booking = await _bookingRepository.Get().Where(x => x.ClinicsService.Clinics.Id == clinicId).ToListAsync();
+            if (booking.Count() == 0)
+            {
+                return null;
+            }
+            return booking;
+        }
     }
 }
