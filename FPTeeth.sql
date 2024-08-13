@@ -54,3 +54,19 @@ VALUES
     (1, 8),
     (1, 9),
     (1, 10);
+INSERT INTO [FPTeeth].[dbo].[ClinicServices] 
+    ([ClinicsId], [ServicesId])
+VALUES
+    -- For Clinic 1
+    (2, 1),  -- Service 1
+    (2, 5),  -- Service 5
+    (2, 6),  -- Service 6
+    (2, 7),  -- Service 7
+    (2, 8),  -- Service 8
+
+    -- For Clinic 2
+    (3, 1),  -- Service 1
+    (3, 5),  -- Service 5
+    (3, 6),  -- Service 6
+    (3, 7),  -- Service 7
+    (3, 8);  -- Service 8
