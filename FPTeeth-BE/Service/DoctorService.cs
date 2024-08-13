@@ -58,16 +58,21 @@ namespace FPTeeth_BE.Service
                 doctor.ClinicsId = ClinicId;
                 await _doctorRepository.SaveChangesAsync();
             }
+            else throw new Exception("Can't find this doctor");
         }
 
         public async Task<List<Doctor>> GetAllDoctorByClinicId(int id)
         {
-            return await _doctorRepository.Get().Where(x => x.ClinicsId == id).ToListAsync();
+            return await _doctorRepository.Get().Include(x => x.Account).Where(x => x.ClinicsId == id).ToListAsync();
         }
         
         public async Task<Doctor> GetDoctorById(int id)
         {
-            return await _doctorRepository.Get().Where(x => x.Account.Id == id).FirstAsync();
+            return await _doctorRepository.Get().Include(x => x.Account).Where(x => x.Account.Id == id).FirstAsync();
+        }
+        public async Task<List<Doctor>> GetAllDoctor()
+        {
+            return await _doctorRepository.Get().Include(x => x.Account).Include(x => x.Account.Role).Where(x => x.Account.Role.Id == 3).Where(x => x.Account.Status == 2).ToListAsync();
         }
     }
 }

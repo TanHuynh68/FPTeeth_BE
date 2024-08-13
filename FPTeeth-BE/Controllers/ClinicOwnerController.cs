@@ -31,7 +31,7 @@ namespace FPTeeth_BE.Controllers
             _workingTimeService = workingTimeService;
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "CLINICOWNER")]
         [HttpPost("addClinic")]
         public async Task<IActionResult> AddClinic([FromBody] AddClinicDto addClinicDto)
         {
@@ -39,7 +39,7 @@ namespace FPTeeth_BE.Controllers
             return Ok();
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "CLINICOWNER")]
         [HttpPost("addDoctor")]
         public async Task<IActionResult> AddDoctor([FromBody] AddDoctorDto addDoctorDto)
         {
@@ -47,7 +47,7 @@ namespace FPTeeth_BE.Controllers
             return Ok();
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "CLINICOWNER")]
         [HttpPost("addDoctorToClinic")]
         public async Task<IActionResult> AddDoctorToClinic(int doctorId, int clinicId)
         {
@@ -55,7 +55,7 @@ namespace FPTeeth_BE.Controllers
             return Ok();
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "CLINICOWNER")]
         [HttpPost("ChangeClinicStatus")]
         public async Task<IActionResult> ChangeClinicStatus(int clinicId)
         {
@@ -63,7 +63,7 @@ namespace FPTeeth_BE.Controllers
             return Ok();
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "CLINICOWNER")]
         [HttpGet("GetAllClinicsByOwnerId")]
         public async Task<List<Clinics>> GetAllClinicsByOwnerId(int ownerId)
         {
@@ -71,7 +71,7 @@ namespace FPTeeth_BE.Controllers
             return await _clinicService.GetClinicsByOwnerId(ownerId);
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "CLINICOWNER")]
         [HttpGet("GetAllPatientsOfClinic")]
         public async Task<List<Customer>> GetAllPatientOfClinic(int clinicId)
         {
@@ -79,7 +79,7 @@ namespace FPTeeth_BE.Controllers
             return await _customerService.getAllPatientOfClinic(clinicId);
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "CLINICOWNER")]
         [HttpGet("GetAllDoctorsOfClinic")]
         public async Task<List<Doctor>> GetAllDoctorByClinicId(int clinicId)
         {
@@ -87,7 +87,7 @@ namespace FPTeeth_BE.Controllers
             return await _doctorService.GetAllDoctorByClinicId(clinicId);
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "CLINICOWNER")]
         [HttpGet("GetAllBookingOfClinic")]
         public async Task<List<Booking>> GetAllBookingOfClinic(int clinicId)
         {
@@ -95,7 +95,7 @@ namespace FPTeeth_BE.Controllers
             return await _bookingService.GetAllByClinicId(clinicId);
         }
         
-        [AllowAnonymous]
+        [Authorize(Roles = "CLINICOWNER")]
         [HttpGet("GetAllWorkingTimeOfDoctor")]
         public async Task<List<WorkingTime>> GetAllWorkingTimeOfDoctor(int doctorId)
         {
@@ -103,7 +103,7 @@ namespace FPTeeth_BE.Controllers
             return await _workingTimeService.GetWorkingTimeByDoctorId(doctorId);
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "CLINICOWNER")]
         [HttpPost("UpdateClinicInformation")]
         public async Task<IActionResult> UpdateClinicInformation([FromBody]Clinics clinic)
         {
@@ -111,7 +111,7 @@ namespace FPTeeth_BE.Controllers
             return Ok();
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "CLINICOWNER")]
         [HttpPost("AddServiceIntoClinic")]
         public async Task<IActionResult> AddServiceIntoClinic(int clinicId,int serviceId)
         {

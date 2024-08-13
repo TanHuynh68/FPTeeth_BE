@@ -19,12 +19,12 @@ namespace FPTeeth_BE.Service
         public async Task<List<Customer>> getAllPatientOfClinic(int clinicId)
         {
             List<Booking> list = await _bookingService.GetAllByClinicId(clinicId);
-            if (list == null) return null;
+            if (list.Count() == 0) return null;
 
             List<Customer> customers = new List<Customer>();
             foreach (Booking booking in list)
             {
-                Customer customer = await _customerRepository.Get().Where(x => x.Id == booking.Customer.Id).FirstAsync();
+                Customer customer = await _customerRepository.Get().Include(x => x.Account).Where(x => x.Id == booking.Customer.Id).FirstAsync();
                 customers.Add(customer);
             }
             return customers; 

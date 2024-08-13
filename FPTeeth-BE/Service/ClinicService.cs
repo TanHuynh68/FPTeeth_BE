@@ -31,24 +31,23 @@ namespace FPTeeth_BE.Service
 
         public async Task<List<Clinics>> GetClinicsActiveAndDeactive()
         {
-            return await _clinicRepository.Get().Where(x => x.Status == 2 || x.Status == 3).ToListAsync();
+            return await _clinicRepository.Get().Include(x => x.Owner).Where(x => x.Status == 2 || x.Status == 3).ToListAsync();
         }
 
         public async Task<Clinics?> GetClinicsByName(string name)
         {
-            return await _clinicRepository.Get().Where(x => x.Name.Contains(name)).FirstOrDefaultAsync();
+            return await _clinicRepository.Get().Include(x => x.Owner).Where(x => x.Name.Contains(name)).FirstOrDefaultAsync();
         }
 
         public async Task<List<Clinics>> GetClinicsPending()
         {
-            return await _clinicRepository.Get().Where(x => x.Status == 1).ToListAsync();
+            return await _clinicRepository.Get().Include(x => x.Owner).Where(x => x.Status == 1).ToListAsync();
         }
         public async Task<List<Clinics>> GetAllClinicAvailable()
         {
-            List<Clinics> result = await _clinicRepository.Get().Where(x => x.Status == 2).ToListAsync();
+            List<Clinics> result = await _clinicRepository.Get().Include(x => x.Owner).Where(x => x.Status == 2).ToListAsync();
             foreach (Clinics clinic in result)
             {
-                clinic.Owner = await _accountService.GetAccountById(clinic.Owner.Id);
                 clinic.Doctors = await _doctorService.GetAllDoctorByClinicId(clinic.Id);
             }
             return result;
@@ -56,7 +55,7 @@ namespace FPTeeth_BE.Service
 
         public async Task<Clinics> GetClinicById(int id)
         {
-            Clinics clinic = await _clinicRepository.GetAsync(id);
+            Clinics clinic = await _clinicRepository.Get().Include(x => x.Owner).Where(x => x.Id == id).FirstAsync();
             clinic.Doctors = await _doctorService.GetAllDoctorByClinicId(id);
             return clinic;
         }
@@ -103,10 +102,9 @@ namespace FPTeeth_BE.Service
 
         public async Task<List<Clinics>> GetClinicsByOwnerId(int id)
         {
-            var result = await _clinicRepository.Get().Where(x => x.Owner.Id == id).ToListAsync();
+            var result = await _clinicRepository.Get().Include(x => x.Owner).Where(x => x.Owner.Id == id).ToListAsync();
             foreach (var clinic in result)
             {
-                clinic.Owner = await _accountService.GetAccountById(id);
                 clinic.Doctors = await _doctorService.GetAllDoctorByClinicId(clinic.Id);
             }
             return result;
@@ -115,7 +113,7 @@ namespace FPTeeth_BE.Service
         public async Task UpdateClinicInfo(Clinics clinic)
         {
             var newClinic = await GetClinicById(clinic.Id);
-            if (clinic == null) throw new Exception("Can't find this clinic");
+            if (newClinic == null) throw new Exception("Can't find this clinic");
             newClinic = clinic;
             newClinic.UpdateAt = DateTime.Now;
             _clinicRepository.SaveChangesAsync();

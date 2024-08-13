@@ -31,9 +31,9 @@ namespace FPTeeth_BE.Controllers
 
         [AllowAnonymous]
         [HttpGet("GetAllDoctors")]
-        public async Task<List<Account>> GetAllDoctors()
+        public async Task<List<Doctor>> GetAllDoctors()
         {
-            return await _accountService.GetAllDoctor();
+            return await _doctorService.GetAllDoctor();
         }
 
         [AllowAnonymous]
@@ -48,6 +48,13 @@ namespace FPTeeth_BE.Controllers
         public async Task<List<Services>> GetAllServices()
         {
             return await _servicesService.GetAllServices();
+        }
+
+        [AllowAnonymous]
+        [HttpGet("GetAllServicesOfClinic")]
+        public async Task<List<ClinicService>> GetAllServicesOfClinic(int id)
+        {
+            return await _clinicServicesService.getAllServiceOfClinic(id);
         }
     }
 }

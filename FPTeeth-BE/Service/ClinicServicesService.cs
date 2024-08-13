@@ -33,9 +33,9 @@ namespace FPTeeth_BE.Service
             }
         }
 
-        public Task<List<Enity.ClinicService>> getAllServiceOfClinic(int id)
+        public async Task<List<Enity.ClinicService>> getAllServiceOfClinic(int id)
         {
-            return _clinicServiceRepository.Get().ToListAsync();
+            return await _clinicServiceRepository.Get().ToListAsync();
         }
     }
 }
