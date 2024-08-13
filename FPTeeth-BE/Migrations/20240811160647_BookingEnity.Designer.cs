@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FPTeeth_BE.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240811183855_FPTeethDB")]
-    partial class FPTeethDB
+    [Migration("20240811160647_BookingEnity")]
+    partial class BookingEnity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
