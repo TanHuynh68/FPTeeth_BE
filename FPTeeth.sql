@@ -19,3 +19,10 @@ VALUES
     (N'Nha Khoa Kim', N'Nha khoa Kim – Chăm sóc sức khỏe răng miệng chuyên sâu.', N'123 Hoàng Văn Thụ, HCM City', NULL, 7, GETDATE(), GETDATE(), 1),
     (N'Nha Khoa Việt Đức', N'Nha khoa Việt Đức – Dịch vụ nha khoa uy tín và chất lượng.', N'456 Nguyễn Trãi, Hà Nội', NULL, 11, GETDATE(), GETDATE(), 1),
     (N'Nha Khoa Paris', N'Nha khoa Paris – Chuyên gia trong điều trị và thẩm mỹ răng miệng.', N'789 Lê Lợi, Đà Nẵng', NULL, 15, GETDATE(), GETDATE(), 1);
+INSERT INTO [FPTeeth].[dbo].[Doctors] 
+    ([DoB], [AccountId], [ClinicsId])
+VALUES
+    ('1980-02-15', 8, 2),  -- Trần Bình Tân
+    ('1985-09-25', 12, 3), -- Vương Trọng Phúc
+    ('1984-03-10', 16, 3),  -- Nguyễn Minh Tâm
+    ('1977-07-20', 17, 4);  -- Lê Văn Sơn
