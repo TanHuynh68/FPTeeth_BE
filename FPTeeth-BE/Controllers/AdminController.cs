@@ -64,10 +64,9 @@ namespace FPTeeth_BE.Controllers
 
         [Authorize(Roles = "ADMIN")]
         [HttpPost("GetAccountByFilter")]
-        public async Task<IActionResult> GetAccountByFilter(FilterUserDTO filterUserDTO)
+        public async Task<List<Account>> GetAccountByFilter(FilterUserDTO filterUserDTO)
         {
-            await _accountService.GetAccountByFilter(filterUserDTO);
-            return Ok();
+            return await _accountService.GetAccountByFilter(filterUserDTO);
         }
 
         [Authorize(Roles = "ADMIN")]
