@@ -4,29 +4,28 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddCors(opt =>
 {
-    opt.AddDefaultPolicy(builder =>
+    opt.AddDefaultPolicy(policy =>
     {
-        builder.WithOrigins("http://localhost:3000")
-            .AllowAnyHeader()
-            .AllowAnyMethod();
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
     });
 });
+
 builder.Services.AddControllers().AddNewtonsoftJson();
 
-builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<DatabaseContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Configure Swagger
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
@@ -57,7 +56,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-builder.Services.Register();
+// Configure JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
 
@@ -84,9 +83,15 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddSingleton<JwtHelper>();
 
+// Register custom services
+builder.Services.Register();
+
 var app = builder.Build();
 
+// Ensure database migration
 EnsureMigrate(app);
+
+app.UseCors(); // Ensure CORS is used before Authentication and Authorization
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -99,13 +104,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors();
 
 app.MapControllers();
 
 app.Run();
-
-
 
 void EnsureMigrate(WebApplication webApp)
 {

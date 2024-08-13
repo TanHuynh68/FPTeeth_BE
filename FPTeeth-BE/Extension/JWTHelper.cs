@@ -1,4 +1,4 @@
-﻿using FPTeeth_BE.Enity;
+﻿using FPTeeth_BE.Enity; // Sử dụng thực thể Account từ namespace FPTeeth_BE.Enity
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -26,12 +26,12 @@ namespace FPTeeth_BE.Extension
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                new Claim(JwtRegisteredClaimNames.Sub, account.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.UniqueName, account?.Email),
-                new Claim(ClaimTypes.Role, account.Role.Name),
-                new Claim(ClaimTypes.Email, account.Email),
-                new Claim("Id", account.Id.ToString()),
-            }),
+                    new Claim(JwtRegisteredClaimNames.Sub, account.Id.ToString()),
+                    new Claim(JwtRegisteredClaimNames.UniqueName, account?.Email),
+                    new Claim(ClaimTypes.Role, account.Role.Name),
+                    new Claim(ClaimTypes.Email, account.Email),
+                    new Claim("Id", account.Id.ToString()),
+                }),
                 Expires = DateTime.UtcNow.AddMinutes(expireMinutes),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 Issuer = jwtSettings["Issuer"],
