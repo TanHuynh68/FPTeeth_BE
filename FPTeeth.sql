@@ -26,3 +26,10 @@ VALUES
     ('1985-09-25', 12, 3), -- Vương Trọng Phúc
     ('1984-03-10', 16, 3),  -- Nguyễn Minh Tâm
     ('1977-07-20', 17, 4);  -- Lê Văn Sơn
+INSERT INTO [FPTeeth].[dbo].[Roles] 
+    ([Name])
+VALUES
+    ('ADMIN'),
+    ('CLINICOWNER'),
+    ('DOCTOR'),
+    ('CUSTOMER');
