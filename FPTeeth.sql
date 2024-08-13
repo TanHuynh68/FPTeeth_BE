@@ -33,3 +33,11 @@ VALUES
     ('CLINICOWNER'),
     ('DOCTOR'),
     ('CUSTOMER');
+INSERT INTO [FPTeeth].[dbo].[Services] 
+    ([Status], [Name])
+VALUES
+    (1, N'Niềng Răng'),
+    (1, N'Tẩy Trắng Răng'),
+    (1, N'Bọc Răng Sứ'),
+    (1, N'Trồng Răng Implant'),
+    (1, N'Nhổ Răng Khôn');
