@@ -16,18 +16,13 @@ namespace FPTeeth_BE.Service
 
         public async Task<List<WorkingTime>> GetAllWorkingTime()
         {
-            return await _workingTimeRepository.Get().ToListAsync();
+            return await _workingTimeRepository.Get().Include(x => x.Doctor).Include(x => x.Slot).ToListAsync();
         }
 
         public async Task<List<WorkingTime>> GetWorkingTimeByDoctorId(int id)
         {
-            var response = await _workingTimeRepository.Get().Where(x => x.Doctor.Id == id).ToListAsync();
-            if (response.Any())
-            {
-                return response;
-            }
-            else 
-                return null;
+            var response = await _workingTimeRepository.Get().Include(x => x.Doctor).Include(x => x.Slot).Where(x => x.Doctor.Id == id).ToListAsync();
+            return response;
         }
     }
 }

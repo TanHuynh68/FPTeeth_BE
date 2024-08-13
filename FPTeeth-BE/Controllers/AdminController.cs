@@ -14,11 +14,13 @@ namespace FPTeeth_BE.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly IClinicService _clinicService;
+        private readonly IServicesService _servicesService;
 
-        public AdminController(IAccountService accountService, IClinicService clinicService)
+        public AdminController(IAccountService accountService, IClinicService clinicService, IServicesService servicesService)
         {
             _accountService = accountService;
             _clinicService = clinicService;
+            _servicesService = servicesService;
         }
 
         [Authorize(Roles = "ADMIN")]
@@ -62,10 +64,9 @@ namespace FPTeeth_BE.Controllers
 
         [Authorize(Roles = "ADMIN")]
         [HttpPost("GetAccountByFilter")]
-        public async Task<IActionResult> GetAccountByFilter(FilterUserDTO filterUserDTO)
+        public async Task<List<Account>> GetAccountByFilter(FilterUserDTO filterUserDTO)
         {
-            await _accountService.GetAccountByFilter(filterUserDTO);
-            return Ok();
+            return await _accountService.GetAccountByFilter(filterUserDTO);
         }
 
         [Authorize(Roles = "ADMIN")]
@@ -122,6 +123,12 @@ namespace FPTeeth_BE.Controllers
             return Ok();
         }
 
-
+        [Authorize(Roles = "ADMIN")]
+        [HttpPut("UpdateServiceStatus/{id}")]
+        public async Task<IActionResult> UpdateServiceStatus(int id)
+        {
+            await _servicesService.ChangeServiceStatus(id);
+            return Ok();
+        }
     }
 }

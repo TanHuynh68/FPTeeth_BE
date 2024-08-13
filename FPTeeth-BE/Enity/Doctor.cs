@@ -4,9 +4,10 @@
     {
         public int Id { get; set; }
 
-        public DateTime DoB { get; set; }
+        public DateTime? DoB { get; set; }
 
         public Account? Account { get; set; }
 
+        public int? ClinicsId { get; set; }
     }
 }

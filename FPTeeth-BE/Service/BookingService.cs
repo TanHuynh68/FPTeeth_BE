@@ -35,15 +35,10 @@ namespace FPTeeth_BE.Service
             _medicineRepository = medicineRepository;
         }
 
-
         public async Task<List<Booking>> GetAllByPatientId(int patientId)
         {
-            var booking = await _bookingRepository.Get().Where(x => x.Customer.Id == patientId).ToListAsync();
-            if (booking.Count() == 0)
-            {
-                return null;
-            }
-            return booking;
+            var result = await _bookingRepository.Get().Include(x => x.Customer).Include(x => x.Doctor).Include(x => x.ClinicsService).Include(x => x.Medicines).Where(x => x.Customer.Id == patientId).ToListAsync();
+            return result;
         }
 
         public async Task<Booking> UpdateResult(int id, string result)
@@ -86,6 +81,12 @@ namespace FPTeeth_BE.Service
             await _bookingRepository.AddAsync(newBooking);
             await _bookingRepository.SaveChangesAsync();
             return newBooking;
+        }
+
+        public async Task<List<Booking>> GetAllByClinicId(int clinicId)
+        {
+            var booking = await _bookingRepository.Get().Include(x => x.Customer).Include(x => x.Doctor).Include(x => x.ClinicsService).Include(x => x.Medicines).Where(x => x.ClinicsService.Clinics.Id == clinicId).ToListAsync();
+            return booking;
         }
     }
 }

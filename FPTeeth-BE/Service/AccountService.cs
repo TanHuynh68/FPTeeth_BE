@@ -50,6 +50,7 @@ namespace FPTeeth_BE.Service
         {
             return await _accountRepository.Get().Include(x => x.Role).Where(x => x.Status == 2 || x.Status == 3).ToListAsync();
         }
+        
 
         public async Task<List<Account>> GetListUserPending()
         {
@@ -58,7 +59,7 @@ namespace FPTeeth_BE.Service
 
         public async Task<Account> GetAccountById(int id)
         {
-            return await _accountRepository.Get().Include(x => x.Role).Where(x => x.Id == id).FirstAsync();
+            return await _accountRepository.GetAsync(id);
         }
 
         public async Task<Account?> Login(LoginDto loginDto)
