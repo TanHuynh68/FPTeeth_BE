@@ -114,7 +114,10 @@ namespace FPTeeth_BE.Service
         {
             var newClinic = await GetClinicById(clinic.Id);
             if (newClinic == null) throw new Exception("Can't find this clinic");
-            newClinic = clinic;
+            newClinic.Description = clinic.Description;
+            newClinic.Name = clinic.Name;
+            newClinic.Address = clinic.Address;
+            newClinic.Image = clinic.Image;
             newClinic.UpdateAt = DateTime.Now;
             _clinicRepository.SaveChangesAsync();
         }
